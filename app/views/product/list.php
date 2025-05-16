@@ -91,7 +91,19 @@
         .btn-delete:hover {
             background: #b71c1c;
         }
-        
+        .no-image {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 0.85rem;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            background-color:rgb(0, 0, 0);
+            text-align: center;
+        }
         @media (max-width: 768px) {
             .page-title { font-size: 1.5rem; }
             .table thead { display: none; }
@@ -108,7 +120,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="/project1/Product/add">Thêm sản phẩm</a></li>
                 <li class="nav-item"><a class="nav-link" href="/project1/Product/list">Danh sách sản phẩm</a></li>
-                <li class="nav-item"><a class="nav-link" href="/project1/">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/project1/home">Trang chủ</a></li>
             </ul>
         </div>
     </nav>

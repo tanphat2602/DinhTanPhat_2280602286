@@ -1,26 +1,29 @@
 <?php
 require_once 'app/models/ProductModel.php';
+
 class ProductController
 {
     private $products = [];
+
     public function __construct()
     {
-        // Giả sử chúng ta lưu trữ sản phẩm trong session để giữ lại khi làm mới trang
         session_start();
         if (isset($_SESSION['products'])) {
             $this->products = $_SESSION['products'];
         }
     }
+
     public function index()
     {
         $this->list();
     }
+
     public function list()
     {
-        // Hiển thị danh sách sản phẩm
         $products = $this->products;
         include 'app/views/product/list.php';
     }
+
     public function add()
     {
         $errors = [];
@@ -29,34 +32,25 @@ class ProductController
             $description = $_POST['description'] ?? '';
             $price = $_POST['price'] ?? 0;
 
-            // Handle image upload
             $imagePath = '';
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $uploadDir = 'public/images/';
-
-                // Create directory if it doesn't exist
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-
-                // Generate unique filename
                 $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
                 $uniqueFilename = 'product_' . uniqid() . '.' . $extension;
                 $uploadPath = $uploadDir . $uniqueFilename;
-
-                // Move uploaded file
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
                     $imagePath = $uniqueFilename;
                 }
             }
 
-            // Kiểm tra tên sản phẩm
             if (empty($name)) {
                 $errors[] = 'Tên sản phẩm là bắt buộc.';
             } elseif (strlen($name) < 10 || strlen($name) > 100) {
                 $errors[] = 'Tên sản phẩm phải có từ 10 đến 100 ký tự.';
             }
-            // Kiểm tra giá
             if (!is_numeric($price) || $price <= 0) {
                 $errors[] = 'Giá phải là một số dương lớn hơn 0.';
             }
@@ -71,6 +65,7 @@ class ProductController
         }
         include 'app/views/product/add.php';
     }
+
     public function edit($id)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -94,6 +89,7 @@ class ProductController
         }
         die('Product not found');
     }
+
     public function delete($id)
     {
         foreach ($this->products as $key => $product) {
@@ -106,5 +102,11 @@ class ProductController
         $_SESSION['products'] = $this->products;
         header('Location: /project1/Product/list');
         exit();
+    }
+
+    // Phương thức mới cho trang chủ
+    public function home()
+    {
+        include 'app/views/home.php'; 
     }
 }
